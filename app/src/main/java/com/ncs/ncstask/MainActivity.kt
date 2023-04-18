@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.ncs.ncstask.databinding.ActivityMainBinding
 import java.util.Locale
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     val counter : Int by lazy {
         sharedPreferences.getInt("COUNTER",0)
     }
+    val anim by lazy {
+        AnimationUtils.loadAnimation(this,R.anim.popup)
+    }
 
 
     fun saveTextLocally(view : View?){
@@ -43,9 +47,13 @@ class MainActivity : AppCompatActivity() {
         val success = editor.commit()
         if (success){
             Toast.makeText(this, "Saved locally", Toast.LENGTH_SHORT).show()
+            binding.input.text.clear()
+            binding.input.startAnimation(anim)
+
+
+
         }else {
             Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show()
-
         }}else {
             Toast.makeText(this, "Input can't be empty", Toast.LENGTH_SHORT).show()
 

@@ -21,9 +21,6 @@ class SearchActivity : AppCompatActivity() {
     val sharedPreferences : SharedPreferences by lazy {
         this@SearchActivity.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     }
-    val editor : SharedPreferences.Editor by lazy {
-        sharedPreferences.edit()
-    }
 
     val counter : Int by lazy {
         sharedPreferences.getInt("COUNTER",0)
@@ -33,7 +30,9 @@ class SearchActivity : AppCompatActivity() {
 
 
     lateinit var lvAdapter : ArrayAdapter<String>
-    lateinit var collection:ArrayList<String>
+   val collection:ArrayList<String> by lazy {
+        extractData()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,16 +67,16 @@ class SearchActivity : AppCompatActivity() {
 
 
     fun extractData() : ArrayList<String>{
-        val collection = ArrayList<String>()
+        val collect = ArrayList<String>()
         for (c in 1..counter){
             val strings = sharedPreferences.getString("INPUT${c}","-1")!!.split(",")
             for (i in strings){
-                collection.add(i)
+                collect.add(i.trim())
                 Log.d(TAG, "Array element : $i")
             }
         }
 
-        return collection
+        return collect
     }
 
     fun getMatches(collection:ArrayList<String>, input : String){
@@ -106,11 +105,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun init(){
-        collection = extractData()
-        lvAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,collection)
+        currentList = extractData()
+        lvAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,currentList)
         binding.listView.adapter = lvAdapter
         binding.searchbar.addTextChangedListener(textWatcher)
-        currentList = collection
 
         binding.listView.setOnItemClickListener{ parent, view, position, id ->
             //Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()
