@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.NCSTask" parent="Theme.Material3.Dark">
+        <!-- Customize your light theme here. -->
+     <item name="colorPrimary">#B870FF</item>
+
+    </style>
+
+    <style name="Theme.NCSTask" parent="Base.Theme.NCSTask" />
+</resources>
